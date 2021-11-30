@@ -6,9 +6,9 @@ In memory .NET 6 database with persistence to disk, files are saved as plain jso
 ```csharp
 using Example;
 
-Helix<List<Person>>.Register();
+Helix<Person>.Register();
 
-var persons = Helix<List<Person>>.Get();
+var persons = Helix<Person>.Get();
 
 var p1 = new Person()
 {
@@ -25,7 +25,7 @@ var p2 = new Person()
 persons.Add(p1);
 persons.Add(p2);
 
-Helix<List<Person>>.Persist();
+Helix<Person>.Persist();
 
 namespace Example
 {
