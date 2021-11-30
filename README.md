@@ -1,9 +1,6 @@
 # Helix
 In memory .NET 6 database with persistence to disk, files are saved as plain json.
 
-## Properties
-Optionally you can set the environment variable `HELIX` to the path you'd like the files to be persisted to. For example `HELIX=C:\Helix\`
-
 ## Example
 
 ```csharp
@@ -40,3 +37,6 @@ namespace Example
     }
 }
 ```
+
+## Properties
+Optionally you can set the environment variable `HELIX` to the path you'd like the files to be persisted to. For example `HELIX=C:\Helix\`
