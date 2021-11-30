@@ -1,48 +1,37 @@
 using System.Text;
 using System.Text.Json;
 
-public static class Helix<T> where T : new()
+public static class Helix<T>
 {
-    private static T _data = default!;
+    private static List<T> _data = new();
 
     /// <summary>
-    /// Gets the current instance of T
+    /// Gets the current instance of List T
     /// </summary>
     /// <returns></returns>
-    public static T Get()
+    public static List<T> Get()
     {
         return _data;
     }
 
     /// <summary>
-    /// Registers a new instance of Helix T and load existing data into memory
+    /// Registers a new instance of List T and load existing data into memory
     /// </summary>
     public static void Register()
     {
         var data = File.Exists(GetFileName()) ? File.ReadAllText(GetFileName(), Encoding.UTF8) : string.Empty;
 
-        _data = (data == string.Empty ? new T() : JsonSerializer.Deserialize<T>(data))!;
+        _data = ((data.Any() ? JsonSerializer.Deserialize<List<T>>(data) : new List<T>())!);
     }
 
     /// <summary>
-    /// Persists the current instance of T to disk, use environment variable HELIX to configure a custom path
+    /// Persists the current instance of List T to disk, use environment variable HELIX to configure a custom path
     /// </summary>
     public static void Persist()
     {
-        if (_data == null) return;
-
         File.WriteAllText(GetFileName(), JsonSerializer.Serialize(_data), Encoding.UTF8);
     }
 
-    private static string GetFileName()
-    {
-        var name = typeof(T).Name;
+    private static string GetFileName() => Path.Combine(Environment.GetEnvironmentVariable("HELIX") ?? string.Empty, typeof(T).Name.ToLowerInvariant().Trim() + ".helix");
 
-        if (typeof(T).GenericTypeArguments.Any())
-        {
-            name = typeof(T).GenericTypeArguments.First().Name;
-        }
-
-        return Path.Combine(Environment.GetEnvironmentVariable("HELIX") ?? string.Empty, name.ToLowerInvariant().Trim() + ".helix");
-    }
 }
