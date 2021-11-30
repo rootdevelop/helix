@@ -3,7 +3,7 @@ In memory .NET 6 database with disk persistence
 
 ## Example
 
-```
+```csharp
 using Example;
 
 Helix<List<Person>>.Register();
